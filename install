@@ -15,10 +15,6 @@ if [ "$?" != "0" ]; then
   install vim
 fi
 
-check_github_visitable() {
-  curl -I https://github.com --connect-timeout 3 >> /dev/null 2>&1
-}
-
 which zsh >> /dev/null 2>&1
 if [ "$?" != "0" ]; then
   update
@@ -37,8 +33,7 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
   export CHSH=no
   export RUNZSH=no
 
-  check_github_visitable
-  if [ "$?" = "0" ]; then
+  if [ "$(net::is_github_visitable)" = "true" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
   else
     echo "Github timeout, use Gitee instead ..."
